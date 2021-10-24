@@ -1,5 +1,4 @@
-setwd("/Users/macintosh/Desktop/R_App/Data_Analysis_App/")
-
+#Download the required libraries
 install.packages("ADNIMERGE_0.0.1.tar.gz", repos = NULL, type = "source")
 library(ADNIMERGE)
 library(tidyverse)
@@ -7,6 +6,9 @@ library(broom.mixed)
 library(lmerTest)
 library(bestNormalize)
 library(XML)
+library(htmlTable)
+
+#Load the datasets
 data(adnimerge)
 cognitive<-uwnpsychsum
 MRI<-read.csv("MRI_tidy.csv")
@@ -14,7 +16,7 @@ abeta<-ucberkeleyav45
 tau <- ucberkeleyav1451_pvc
 FDG<-read.csv("FDG_tidy.csv")
 
-# Can the "proprocessing" go inside the parent function (also is there a way to automate this?)
+#Data Preprocessing
 demographic<-adnimerge %>% select(RID,VISCODE,PTGENDER,PTEDUCAT,AGE,
                                   ADAS11,ADAS13,MMSE,Years.bl,APOE4,DX) %>%group_by(RID) %>%
         mutate(PTGENDER=as.factor(ifelse(PTGENDER=="Female",0,
@@ -31,7 +33,7 @@ tau <- tau %>% rename_if(stringr::str_detect(names(.),"SUVR"),~paste0(.,".T")) %
         rename_if(stringr::str_detect(names(.),"VOLUME"),~paste0(.,".T")) %>%
         select(-c(EXAMDATE,ORIGPROT))
 
-# Find Datasets
+#Function to identify and locate dataset based on the variable input
 datasets<-list(demographic,cognitive,abeta,tau,MRI,FDG)
 col_df<-NULL
 for(i in 1:length(datasets)){
@@ -44,9 +46,7 @@ find_datasets<-function(IV,DV){
         list(index_IV,index_DV)
 }
 
-#dim(data.frame(datasets[find_datasets("Cingulate","MMSE")[[1]]]))
-
-#Data Merge --> Do I have to merge cognitive data?
+#Function to automatically merge the provided datasets (independent variable and dependent variable)
 merge_data <- function(data1,data2){
         if ((demographic %in% c(data1,data2))[1]){
                 if ((dim(data1)==dim(data2))[1]){
@@ -70,19 +70,7 @@ merge_data <- function(data1,data2){
         }
 }
 
-#dim(merge_data(FDG,demographic))
-
-
-# Normalize
-#wrapper<-function(IV,DV,df){
-#        IV_N<-Normalize(IV,DV,df)[[1]]
-#        DV_N<-Normalize(IV,DV,df)[[2]]
-#        df[IV]<-IV_N
-#        df[DV]<-DV_N
-#        View(df)
-#}
-
-
+#Automatic normalization of dependent and independent variables: options include "no transform", "logarithm", and "square-root"
 Normalize<-function(IV,DV,df){
         body(bestNormalize)[[4]]<-substitute(methods <- c("no_transform","log_x","sqrt_x"))
         x<-with(df,bestNormalize(eval(parse(text=IV)), standardize = F, allow_exp = F, allow_orderNorm = F))
@@ -91,7 +79,7 @@ Normalize<-function(IV,DV,df){
         #df<-df%>%mutate(IV=x$x.t,DV=y$x.t)
 }
 
-#LMER Function -> unsure: how the identification of IV, DV would affect the type of analysis (need to develop)
+#Function to fit the linear mixed effect models: additional feature of covariate selection (none, diagnosis, APOE4 genotype, or both)
 lmer_fun<-function(df,IV,DV,covars=NULL){
         if(is.null(covars)){
                 if (IV %in% colnames(MRI)) {
@@ -139,11 +127,7 @@ lmer_fun<-function(df,IV,DV,covars=NULL){
         }
 }
 
-
-#lmer_fun(df,"Cingulate","MMSE",covars=list("DX","APOE4")) %>% tidy()
-
-
-#Wrapper Function
+#Wrapper Function: brings together the aforementioned functions into a single, united function
 wrapper_function<-function(IV,DV,covars=NULL){
         datasets<-list(demographic,cognitive,abeta,tau,MRI,FDG)
         col_df<-NULL
@@ -172,6 +156,3 @@ wrapper_function<-function(IV,DV,covars=NULL){
         p<-ggeffects::ggpredict(mod,terms = c("Years.init",IV)) %>% plot()
         list(t,p)
 }
-
-# library(htmlTable)
-# wrapper_function("Cingulate","MMSE",covars=list("APOE4","DX"))[[1]]
