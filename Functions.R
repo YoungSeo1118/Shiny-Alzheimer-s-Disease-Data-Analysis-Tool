@@ -7,6 +7,7 @@ library(lmerTest)
 library(bestNormalize)
 library(XML)
 library(htmlTable)
+library(Hmisc)
 
 #Load the datasets
 data(adnimerge)
