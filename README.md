@@ -15,3 +15,5 @@ function called wrapper_function().
 
 The code for the Shiny Application can be found in the folder Shiny Application, which includes the ui and server files. This is the first prototype, so the future
 modifications would take measures to enhance the overall aesthetics and improve the user-friendliness of the app (e.g., simplify the variable name).
+
+![Alt text](/Users/macintosh/Desktop/statistics_app_screenshot.png?raw=true "Statistics Page")
