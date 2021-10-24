@@ -16,6 +16,7 @@ function called wrapper_function().
 The code for the Shiny Application can be found in the folder Shiny Application, which includes the ui and server files. This is the first prototype, so the future
 modifications would take measures to enhance the overall aesthetics and improve the user-friendliness of the app (e.g., simplify the variable name).
 
-![Alt text](https://github.com/YoungSeo1118/Shiny-Alzheimer-s-Disease-Data-Analysis-Tool/blob/main/Shiny_Application/Screenshots/statistics_app_screenshot.png)
 
+![Alt text](https://github.com/YoungSeo1118/Shiny-Alzheimer-s-Disease-Data-Analysis-Tool/blob/main/Shiny_Application/Screenshots/statistics_app_screenshot.png)
+### Plot 
 ![Alt text](https://github.com/YoungSeo1118/Shiny-Alzheimer-s-Disease-Data-Analysis-Tool/blob/main/Shiny_Application/Screenshots/plot_app_screenshot.png)
