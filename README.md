@@ -14,9 +14,11 @@ normalization based on the Pearson P test statistic for normality, and lmer_fun(
 function called wrapper_function().
 
 The code for the Shiny Application can be found in the folder Shiny Application, which includes the ui and server files. This is the first prototype, so the future
-modifications would take measures to enhance the overall aesthetics and improve the user-friendliness of the app (e.g., simplify the variable name).
+modifications would take measures to enhance the overall aesthetics and improve the user-friendliness of the app (e.g., simplify the variable name). As can be seen
+in the pictures below, the app consists of the statistics section (shows estimate, confidence interval, standard error, random effects, and significance) and the
+plot section (prediction graph using the ggPredict function).
 
-
+### Statistics Section
 ![Alt text](https://github.com/YoungSeo1118/Shiny-Alzheimer-s-Disease-Data-Analysis-Tool/blob/main/Shiny_Application/Screenshots/statistics_app_screenshot.png)
-### Plot 
+### Plot Section
 ![Alt text](https://github.com/YoungSeo1118/Shiny-Alzheimer-s-Disease-Data-Analysis-Tool/blob/main/Shiny_Application/Screenshots/plot_app_screenshot.png)
